@@ -30,6 +30,5 @@ int main(int argc, char const *argv[]) {
 		printf("second write success\n");
 	}
 	printf("done\n");
-
 	return 0;
 }
