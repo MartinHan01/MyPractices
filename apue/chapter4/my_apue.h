@@ -10,3 +10,10 @@
 
 #define BUFFSIZE 4096
 #define MAXLINE  4096
+
+void err_ret(char *);
+
+void err_ret(char *str) {
+    perror(str);
+    exit(1);
+}
