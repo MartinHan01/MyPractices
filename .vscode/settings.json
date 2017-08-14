@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "my_apue.h": "c"
+        "my_apue.h": "c",
+        "string.h": "c",
+        "stdio.h": "c"
     }
 }
