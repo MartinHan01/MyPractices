@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     while(fgets(line, MAXLINE, f) != NULL) {
         printf("line is %s \n",line);
     }
-
+    
     fclose(f);
 
     return 0;
