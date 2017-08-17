@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <pwd.h>
+#include <time.h>
 
 #define BUFFSIZE 4096
 #define MAXLINE  4096
