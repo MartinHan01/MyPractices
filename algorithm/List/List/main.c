@@ -23,9 +23,19 @@ int main(int argc, char *argv[]) {
 	printf("reverse list\n");
 	Reverse(list);
 	PrintList(list);
-	DeleteList(list);
-	printf("empty list\n");
+	printf("sort list\n");
+	Sort(list);
 	PrintList(list);
+
+	printf("sort list again\n");
+	SortByPointer(list);
+	PrintList(list);
+
+	printf("empty list\n");
+	DeleteList(list);
+	PrintList(list);
+	
+
 	system("pause");
 	return 0;
 }

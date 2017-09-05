@@ -18,6 +18,8 @@ void Insert(int X, List L, Position P);
 void DeleteList(List L);
 void Reverse(List L);
 void PrintList(List L);
+void Sort(List L);
+void SortByPointer(List L);
 
 struct Node {
 	int Element;

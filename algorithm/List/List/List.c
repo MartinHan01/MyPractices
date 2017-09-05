@@ -150,3 +150,60 @@ void PrintList(List L) {
 	}
 	printf("\n");
 }
+
+void Sort(List L) {
+	L = L->Next;
+	if (L == NULL) {
+		return;
+	}
+	PtrToNode p = L;
+	int tmp;
+	while (L != NULL) {
+		p = L->Next;
+		while (p != NULL) {
+			if (L->Element > p->Element) {
+				tmp = L->Element;
+				L->Element = p->Element;
+				p->Element = tmp;
+			}
+
+			p = p->Next;
+		}
+		L = L->Next;
+		
+	}
+}
+
+void SortByPointer(List L) {
+	PtrToNode p, q, r, s;
+	p = L;
+	if (p->Next == NULL) {
+		return;
+	}
+	while (p != NULL && p->Next != NULL) {
+		q = p->Next;
+		while (q != NULL && q->Next != NULL) {
+			if (p->Next->Element < q->Next->Element) {
+				r = q->Next;
+				s = r->Next;
+				if (p->Next == q) {
+					q->Next = r->Next;
+					p->Next = r;
+					r->Next = q;
+				}
+				else {
+					s = r->Next;
+					p->Next->Next = s;
+					r->Next = p->Next->Next;
+					q->Next = p->Next;
+					p->Next = r;
+					
+				}
+
+			}
+
+			q = q->Next;
+		}
+		p = p->Next;
+	}
+}
