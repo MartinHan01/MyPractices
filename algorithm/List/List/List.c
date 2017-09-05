@@ -93,20 +93,57 @@ Position FindPrevious(int X, List L) {
 	return NULL;
 }
 void Insert(int X, List L, Position P) {
+	PtrToNode tmp = (PtrToNode)malloc(sizeof(struct Node));
+	tmp->Element = X;
+	L = L->Next;
+	if (NULL == L) {
+		return;
+	}
+	while (NULL != L->Next) {
+		if (L== P) {
+			tmp->Next = L->Next;
+			L->Next = tmp;
+			break;
+		}
+		L = L->Next;
+	}
 
 }
 void DeleteList(List L) {
-
+	if (NULL == L->Next) {
+		return;
+	}
+	PtrToNode head = L;
+	PtrToNode tmp;
+	while (NULL != L) {
+		tmp = L;
+		L = L->Next;
+		free(tmp);
+	}
+	head->Next = NULL;
 }
-Position Header(List L) {
-	return NULL;
-}
-int Retrieve(Position P) {
-	return -1;
+void Reverse(List L) {
+	PtrToNode p, q, r;
+	p = L->Next;
+	if (p == NULL) {
+		return;
+	}
+	q = p->Next;
+	p->Next = NULL;
+	while (q != NULL) {
+		r = q->Next;
+		q->Next = p;
+		p = q;
+		q = r;
+	}
+	L->Next = p;
+	return;
 }
 
 void PrintList(List L) {
-
+	if (L->Next == NULL) {
+		printf("empty\n");
+	}
 	while (L->Next != NULL) {
 		printf("%d -> ", L->Next->Element);
 		L = L->Next;

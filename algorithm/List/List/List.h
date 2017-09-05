@@ -16,8 +16,7 @@ void Delete(int X, List L);
 Position FindPrevious(int X, List L);
 void Insert(int X, List L, Position P);
 void DeleteList(List L);
-Position Header(List L);
-int Retrieve(Position P);
+void Reverse(List L);
 void PrintList(List L);
 
 struct Node {

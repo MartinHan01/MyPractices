@@ -17,7 +17,15 @@ int main(int argc, char *argv[]) {
 	if (node != NULL) {
 		printf("position 6 previces is %d\n", node->Element);
 	}
-	
+	Insert(5, list, node);
+	printf("insert success\n");
+	PrintList(list);
+	printf("reverse list\n");
+	Reverse(list);
+	PrintList(list);
+	DeleteList(list);
+	printf("empty list\n");
+	PrintList(list);
 	system("pause");
 	return 0;
 }
