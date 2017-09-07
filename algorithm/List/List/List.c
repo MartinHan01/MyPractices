@@ -13,6 +13,24 @@ List InitMyList(int size) {
 	return head;
 }
 
+List InitLoopList(int size) {
+	int i;
+	PtrToNode head = (PtrToNode)malloc(sizeof(struct Node));
+	PtrToNode tmp = head;
+	PtrToNode middle = NULL;;
+	for (i = 0; i < size; i++) {
+		tmp->Next = (PtrToNode)malloc(sizeof(struct Node));
+		tmp->Next->Element = i + 1;
+		tmp = tmp->Next;
+		tmp->Next = NULL;
+		if (size / 2 == i) {
+			middle = tmp;
+		}
+	}
+	tmp->Next = middle;
+	return head;
+}
+
 List MakeEmpty(List L) {
 	PtrToNode tmp = L->Next;
 	L->Next = NULL;
@@ -219,7 +237,7 @@ void SortByPointer2(List L) {
 		for (j = 0; j < length - i - 1; j++) {
 			p = pre->Next;
 			q = p->Next;
-			if (p->Element < q->Element) {
+			if (p->Element > q->Element) {
 				p->Next = q->Next;
 				pre->Next = q;
 				q->Next = p;
@@ -244,4 +262,21 @@ int LengthList(List L) {
 		L = L->Next;
 	}
 	return result;
+}
+
+int IsLoop(List L) {
+	if (L->Next == NULL) {
+		return 0;
+	}
+	PtrToNode slow = L;
+	PtrToNode fast = L;
+	while (fast != NULL && fast->Next != NULL) {
+		slow = slow->Next;
+		fast = fast->Next->Next;
+		if (slow == fast) {
+			return 1;
+		}
+	}
+	return 0;
+	
 }

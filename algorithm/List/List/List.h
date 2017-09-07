@@ -8,6 +8,7 @@ typedef PtrToNode List;
 typedef PtrToNode Position;
 
 List InitMyList(int size);
+List InitLoopList(int size);
 List MakeEmpty(List L);
 int IsEmpty(List L);
 int IsLast(Position P,List L);
@@ -22,6 +23,7 @@ void Sort(List L);
 void SortByPointer(List L);
 void SortByPointer2(List L);
 int LengthList(List L);
+int IsLoop(List L);
 
 
 struct Node {
