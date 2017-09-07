@@ -27,8 +27,15 @@ int main(int argc, char *argv[]) {
 	Sort(list);
 	PrintList(list);
 
-	printf("sort list again\n");
+	int length = LengthList(list);
+	printf("print list length is %d\n", length);
+
+	/*printf("sort list again\n");
 	SortByPointer(list);
+	PrintList(list);*/
+
+	printf("sort list again2\n");
+	SortByPointer2(list);
 	PrintList(list);
 
 	printf("empty list\n");

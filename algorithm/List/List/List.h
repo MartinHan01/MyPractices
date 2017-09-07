@@ -20,6 +20,9 @@ void Reverse(List L);
 void PrintList(List L);
 void Sort(List L);
 void SortByPointer(List L);
+void SortByPointer2(List L);
+int LengthList(List L);
+
 
 struct Node {
 	int Element;
