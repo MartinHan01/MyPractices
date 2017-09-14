@@ -13,6 +13,24 @@ List InitMyList(int size) {
 	return head;
 }
 
+List InitLoopList(int size) {
+	int i;
+	PtrToNode head = (PtrToNode)malloc(sizeof(struct Node));
+	PtrToNode tmp = head;
+	PtrToNode middle = NULL;;
+	for (i = 0; i < size; i++) {
+		tmp->Next = (PtrToNode)malloc(sizeof(struct Node));
+		tmp->Next->Element = i + 1;
+		tmp = tmp->Next;
+		tmp->Next = NULL;
+		if (size / 2 == i) {
+			middle = tmp;
+		}
+	}
+	tmp->Next = middle;
+	return head;
+}
+
 List MakeEmpty(List L) {
 	PtrToNode tmp = L->Next;
 	L->Next = NULL;
@@ -175,35 +193,90 @@ void Sort(List L) {
 }
 
 void SortByPointer(List L) {
-	PtrToNode p, q, r, s;
-	p = L;
-	if (p->Next == NULL) {
+	PtrToNode p, q, pre, tmp,head;
+	head = L;
+	if (L->Next == NULL) {
 		return;
 	}
-	while (p != NULL && p->Next != NULL) {
-		q = p->Next;
-		while (q != NULL && q->Next != NULL) {
-			if (p->Next->Element < q->Next->Element) {
-				r = q->Next;
-				s = r->Next;
-				if (p->Next == q) {
-					q->Next = r->Next;
-					p->Next = r;
-					r->Next = q;
-				}
-				else {
-					s = r->Next;
-					p->Next->Next = s;
-					r->Next = p->Next->Next;
-					q->Next = p->Next;
-					p->Next = r;
-					
-				}
+	int i = 0, j = 0;
+	while (L->Next != NULL && L->Next->Next != NULL) {
+		j = 0;
+		pre = head;
+		while (pre->Next != NULL && pre->Next->Next != NULL) {
+			p = pre->Next;
+			q = p->Next;
+			if (p->Element < q->Element) {
+				p->Next = q->Next;
+				q->Next = p;
+				pre->Next = q;
 
+				tmp = p;
+				p = q;
+				q = tmp;
 			}
-
-			q = q->Next;
+			pre = pre->Next;
 		}
-		p = p->Next;
+		i++;
+		L = head;
+		while (j < i) {
+			L = L->Next;
+			j++;
+		}
 	}
+}
+
+void SortByPointer2(List L) {
+	int length = LengthList(L);
+	if (length == 0) {
+		return;
+	}
+	int i,j;
+	PtrToNode pre, p, q, tmp;
+	for (i = 0; i < length - 1; i++) {
+		pre = L;
+		for (j = 0; j < length - i - 1; j++) {
+			p = pre->Next;
+			q = p->Next;
+			if (p->Element > q->Element) {
+				p->Next = q->Next;
+				pre->Next = q;
+				q->Next = p;
+
+				tmp = p;
+				p = q;
+				q = p;
+			}
+			pre = pre->Next;
+		}
+	}
+
+}
+
+int LengthList(List L) {
+	int result = 0;
+	if (L->Next == NULL) {
+		return 0;
+	}
+	while (L->Next != NULL) {
+		result++;
+		L = L->Next;
+	}
+	return result;
+}
+
+int IsLoop(List L) {
+	if (L->Next == NULL) {
+		return 0;
+	}
+	PtrToNode slow = L;
+	PtrToNode fast = L;
+	while (fast != NULL && fast->Next != NULL) {
+		slow = slow->Next;
+		fast = fast->Next->Next;
+		if (slow == fast) {
+			return 1;
+		}
+	}
+	return 0;
+	
 }

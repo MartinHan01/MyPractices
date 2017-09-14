@@ -17,24 +17,38 @@ int main(int argc, char *argv[]) {
 	if (node != NULL) {
 		printf("position 6 previces is %d\n", node->Element);
 	}
+	printf("insert 5\n");
 	Insert(5, list, node);
-	printf("insert success\n");
+	
 	PrintList(list);
+
 	printf("reverse list\n");
 	Reverse(list);
 	PrintList(list);
+
 	printf("sort list\n");
 	Sort(list);
 	PrintList(list);
+
+	int length = LengthList(list);
+	printf("print list length is %d\n", length);
 
 	printf("sort list again\n");
 	SortByPointer(list);
 	PrintList(list);
 
-	printf("empty list\n");
+	printf("sort list again2\n");
+	SortByPointer2(list);
+	PrintList(list);
+
+	List loopList = InitLoopList(10);
+	printf("list has loop? %d\n", IsLoop(loopList));
+
+	/*printf("empty list\n");
 	DeleteList(list);
 	PrintList(list);
 	
+*/
 
 	system("pause");
 	return 0;
