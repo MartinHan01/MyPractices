@@ -7,9 +7,10 @@ SearchTree InitTree();
 int main(int argc, char *argv[]) {
 
 	SearchTree tree = InitTree();
+	printf("High:%d\n", High(tree));
 	PrintTree(tree);
 
-
+	system("pause");
 	return 0;
 }
 
@@ -42,4 +43,5 @@ SearchTree InitTree() {
 	p6->Right = NULL;
 	p7->Left = NULL;
 	p7->Right = NULL;
+	return p1;
 }

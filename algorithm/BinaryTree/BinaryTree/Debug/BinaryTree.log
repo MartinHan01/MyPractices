@@ -1,0 +1,9 @@
+﻿  tree.c
+d:\mygitrespository\githubmartinhan\mypractices\algorithm\binarytree\binarytree\tree.c(8): warning C4716: “Find”: 必须返回一个值
+d:\mygitrespository\githubmartinhan\mypractices\algorithm\binarytree\binarytree\tree.c(5): warning C4716: “MakeEmpty”: 必须返回一个值
+d:\mygitrespository\githubmartinhan\mypractices\algorithm\binarytree\binarytree\tree.c(11): warning C4716: “FindMin”: 必须返回一个值
+d:\mygitrespository\githubmartinhan\mypractices\algorithm\binarytree\binarytree\tree.c(14): warning C4716: “FindMax”: 必须返回一个值
+d:\mygitrespository\githubmartinhan\mypractices\algorithm\binarytree\binarytree\tree.c(20): warning C4716: “Delete”: 必须返回一个值
+d:\mygitrespository\githubmartinhan\mypractices\algorithm\binarytree\binarytree\tree.c(17): warning C4716: “Insert”: 必须返回一个值
+  BinaryTree.vcxproj -> D:\mygitrespository\githubMartinHan\MyPractices\algorithm\BinaryTree\Debug\BinaryTree.exe
+  BinaryTree.vcxproj -> D:\mygitrespository\githubMartinHan\MyPractices\algorithm\BinaryTree\Debug\BinaryTree.pdb (Partial PDB)
