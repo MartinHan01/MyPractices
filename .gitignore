@@ -5,3 +5,4 @@ os/tolset/harib_my/*.img
 *.obj
 *.bin
 *.gas
+*.img
