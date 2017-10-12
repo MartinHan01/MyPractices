@@ -9,7 +9,7 @@ void io_out8(int port,int data);
 void init_palette(void);
 void set_palette(int, int, char rgb[]);
 void hlt_loop(void);
-void boxfill(char* vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
+void boxfill8(char* vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
 
 #define COL8_000000		0     /*  0:黒 */
 #define COL8_FF0000		1     /*  1:明るい赤 */
@@ -30,11 +30,29 @@ void boxfill(char* vram, int xsize, unsigned char c, int x0, int y0, int x1, int
 
 void HariMain(void) {
     int i = 0;
-    char *p = (char*)0xa0000;
+    char *vram = (char*)0xa0000;
     init_palette();
 
-    boxfill(p, 320, COL8_FF0000, 20, 20, 120, 120);
+    int xsize,ysize;
+    xsize = 320;
+	ysize = 200;
 
+	boxfill8(vram, xsize, COL8_008484,  0,         0,          xsize -  1, ysize - 29);
+	boxfill8(vram, xsize, COL8_C6C6C6,  0,         ysize - 28, xsize -  1, ysize - 28);
+	boxfill8(vram, xsize, COL8_FFFFFF,  0,         ysize - 27, xsize -  1, ysize - 27);
+	boxfill8(vram, xsize, COL8_C6C6C6,  0,         ysize - 26, xsize -  1, ysize -  1);
+
+	boxfill8(vram, xsize, COL8_FFFFFF,  3,         ysize - 24, 59,         ysize - 24);
+	boxfill8(vram, xsize, COL8_FFFFFF,  2,         ysize - 24,  2,         ysize -  4);
+	boxfill8(vram, xsize, COL8_848484,  3,         ysize -  4, 59,         ysize -  4);
+	boxfill8(vram, xsize, COL8_848484, 59,         ysize - 23, 59,         ysize -  5);
+	boxfill8(vram, xsize, COL8_000000,  2,         ysize -  3, 59,         ysize -  3);
+	boxfill8(vram, xsize, COL8_000000, 60,         ysize - 24, 60,         ysize -  3);
+
+	boxfill8(vram, xsize, COL8_848484, xsize - 47, ysize - 24, xsize -  4, ysize - 24);
+	boxfill8(vram, xsize, COL8_848484, xsize - 47, ysize - 23, xsize - 47, ysize -  4);
+	boxfill8(vram, xsize, COL8_FFFFFF, xsize - 47, ysize -  3, xsize -  4, ysize -  3);
+	boxfill8(vram, xsize, COL8_FFFFFF, xsize -  3, ysize - 24, xsize -  3, ysize -  3);
     
     hlt_loop();
 }
@@ -80,7 +98,7 @@ void set_palette(int start, int end,char rgb[]) {
     return ;
 }
 
-void boxfill(char* vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1) {
+void boxfill8(char* vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1) {
     int x,y;
     for(x = x0; x <= x1; x++) {
         for(y = y0; y < y1; y++) {
