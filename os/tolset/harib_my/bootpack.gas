@@ -1,0 +1,151 @@
+	.file	"bootpack.c"
+	.text
+	.balign 2
+.globl _HariMain
+	.def	_HariMain;	.scl	2;	.type	32;	.endef
+_HariMain:
+	pushl	%ebp
+	movl	%esp, %ebp
+	pushl	%ebx
+	xorl	%ebx, %ebx
+	call	_init_palette
+L6:
+	movb	%bl, %al
+	andl	$15, %eax
+	movb	%al, 655360(%ebx)
+	incl	%ebx
+	cmpl	$63680, %ebx
+	jle	L6
+	popl	%ebx
+	popl	%ebp
+	jmp	_hlt_loop
+	.data
+_table_rgb.0:
+	.byte	0
+	.byte	0
+	.byte	0
+	.byte	-1
+	.byte	0
+	.byte	0
+	.byte	0
+	.byte	-1
+	.byte	0
+	.byte	-1
+	.byte	-1
+	.byte	0
+	.byte	0
+	.byte	0
+	.byte	-1
+	.byte	-1
+	.byte	0
+	.byte	-1
+	.byte	0
+	.byte	-1
+	.byte	-1
+	.byte	-1
+	.byte	-1
+	.byte	-1
+	.byte	-58
+	.byte	-58
+	.byte	-58
+	.byte	-124
+	.byte	0
+	.byte	0
+	.byte	0
+	.byte	-124
+	.byte	0
+	.byte	-124
+	.byte	-124
+	.byte	0
+	.byte	0
+	.byte	0
+	.byte	-124
+	.byte	-124
+	.byte	0
+	.byte	-124
+	.byte	0
+	.byte	-124
+	.byte	-124
+	.byte	-124
+	.byte	-124
+	.byte	-124
+	.text
+	.balign 2
+.globl _init_palette
+	.def	_init_palette;	.scl	2;	.type	32;	.endef
+_init_palette:
+	pushl	%ebp
+	movl	%esp, %ebp
+	pushl	$_table_rgb.0
+	pushl	$15
+	pushl	$0
+	call	_set_palette
+	leave
+	ret
+	.balign 2
+.globl _set_palette
+	.def	_set_palette;	.scl	2;	.type	32;	.endef
+_set_palette:
+	pushl	%ebp
+	movl	%esp, %ebp
+	pushl	%edi
+	pushl	%esi
+	pushl	%ebx
+	pushl	%ecx
+	movl	8(%ebp), %ebx
+	movl	12(%ebp), %edi
+	movl	16(%ebp), %esi
+	call	_io_load_eflags
+	movl	%eax, -16(%ebp)
+	call	_io_cli
+	pushl	%ebx
+	pushl	$968
+	call	_io_out8
+	testl	%edi, %edi
+	popl	%eax
+	popl	%edx
+	js	L17
+	leal	1(%edi), %ebx
+L15:
+	movsbl	(%esi),%eax
+	pushl	%eax
+	pushl	$969
+	call	_io_out8
+	movsbl	1(%esi),%eax
+	pushl	%eax
+	pushl	$969
+	call	_io_out8
+	movsbl	2(%esi),%eax
+	pushl	%eax
+	addl	$3, %esi
+	pushl	$969
+	call	_io_out8
+	addl	$24, %esp
+	decl	%ebx
+	jne	L15
+L17:
+	movl	-16(%ebp), %eax
+	movl	%eax, 8(%ebp)
+	leal	-12(%ebp), %esp
+	popl	%ebx
+	popl	%esi
+	popl	%edi
+	popl	%ebp
+	jmp	_io_store_eflags
+	.balign 2
+.globl _hlt_loop
+	.def	_hlt_loop;	.scl	2;	.type	32;	.endef
+_hlt_loop:
+	pushl	%ebp
+	movl	%esp, %ebp
+L19:
+	call	_io_hlt
+	jmp	L19
+	.def	_io_hlt;	.scl	2;	.type	32;	.endef
+	.def	_io_store_eflags;	.scl	2;	.type	32;	.endef
+	.def	_io_out8;	.scl	2;	.type	32;	.endef
+	.def	_io_cli;	.scl	2;	.type	32;	.endef
+	.def	_io_load_eflags;	.scl	2;	.type	32;	.endef
+	.def	_set_palette;	.scl	2;	.type	32;	.endef
+	.def	_hlt_loop;	.scl	2;	.type	32;	.endef
+	.def	_init_palette;	.scl	2;	.type	32;	.endef
