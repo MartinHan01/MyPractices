@@ -30,12 +30,20 @@ void boxfill8(char* vram, int xsize, unsigned char c, int x0, int y0, int x1, in
 
 void HariMain(void) {
     int i = 0;
-    char *vram = (char*)0xa0000;
+    short *binfo_scrnx,*binfo_scrny;
+    int *binfo_vram;
+    char *vram;
     init_palette();
+    
+    binfo_scrnx = (short *)0x0ff4;
+    binfo_scrny = (short *)0x0ff6;
+    binfo_vram = (int *)0x0ff8;
+
 
     int xsize,ysize;
-    xsize = 320;
-	ysize = 200;
+    xsize = *binfo_scrnx;
+    ysize = *binfo_scrny;
+    vram = *binfo_vram;
 
 	boxfill8(vram, xsize, COL8_008484,  0,         0,          xsize -  1, ysize - 29);
 	boxfill8(vram, xsize, COL8_C6C6C6,  0,         ysize - 28, xsize -  1, ysize - 28);

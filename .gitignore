@@ -1,7 +1,7 @@
-os/tolset/harib_my/*.bin
-os/tolset/harib_my/*.lst
-os/tolset/harib_my/*.bim
-os/tolset/harib_my/*.img
+/os/tolset/harib_my/*.bin
+/os/tolset/harib_my/*.lst
+/os/tolset/harib_my/*.bim
+/os/tolset/harib_my/*.img
 *.obj
 *.bin
 *.gas
