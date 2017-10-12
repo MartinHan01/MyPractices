@@ -10,6 +10,12 @@ int main(int argc, char *argv[]) {
 	printf("High:%d\n", High(tree));
 	PrintTree(tree);
 
+	printf("find 3 element position is  %p \n", Find(6, tree));
+
+	printf("make empty tree\n");
+	tree = MakeEmpty(tree);
+	PrintTree(tree);
+
 	system("pause");
 	return 0;
 }
