@@ -1,5 +1,6 @@
-void io_hlt(void);
+extern char hankaku[4096];
 
+void io_hlt(void);
 void write_mem8(int, int);
 int io_load_eflags(void);
 void io_cli(void);
@@ -10,7 +11,7 @@ void init_palette(void);
 void set_palette(int, int, char rgb[]);
 void hlt_loop(void);
 void boxfill8(char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
-void putfont8(char *vram, int xsize, int x, int y, char c, char *font);
+void putfont8(char *vram, int xsize, int x, int y, unsigned char c, char *font);
 void init_screen(char *vram, int x, int y);
 
 #define COL8_000000 0  /*  0:黒 */
@@ -50,12 +51,12 @@ void HariMain(void)
     vram = binfo->vram;
 
     init_screen(vram, xsize, ysize);
-
-    static char font_A[16] = {
-        0x00, 0x18, 0x18, 0x18, 0x18, 0x24, 0x24, 0x24,
-        0x24, 0x7e, 0x42, 0x42, 0x42, 0xe7, 0x00, 0x00};
-
-    putfont8(binfo->vram, binfo->scrnx, 0, 0, COL8_840084, font_A);
+    putfont8(binfo->vram, binfo->scrnx, 8, 8, COL8_840084, hankaku + 'A' * 16);
+    putfont8(binfo->vram, binfo->scrnx, 16, 8, COL8_840084, hankaku + 'B' * 16);
+    putfont8(binfo->vram, binfo->scrnx, 24, 8, COL8_840084, hankaku + 'C' * 16);
+    putfont8(binfo->vram, binfo->scrnx, 40, 8, COL8_840084, hankaku + '1' * 16);
+    putfont8(binfo->vram, binfo->scrnx, 48, 8, COL8_840084, hankaku + '2' * 16);
+    putfont8(binfo->vram, binfo->scrnx, 56, 8, COL8_840084, hankaku + '3' * 16);
 
     hlt_loop();
 }
@@ -84,7 +85,7 @@ void init_palette(void)
     return;
 }
 
-void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
+void putfont8(char *vram, int xsize, int x, int y,unsigned char c, char *font)
 {
     int i;
     char d;

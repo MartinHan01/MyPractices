@@ -1,22 +1,4 @@
 	.file	"bootpack.c"
-	.data
-_font_A.0:
-	.byte	0
-	.byte	24
-	.byte	24
-	.byte	24
-	.byte	24
-	.byte	36
-	.byte	36
-	.byte	36
-	.byte	36
-	.byte	126
-	.byte	66
-	.byte	66
-	.byte	66
-	.byte	-25
-	.byte	0
-	.byte	0
 	.text
 	.balign 2
 .globl _HariMain
@@ -25,25 +7,68 @@ _HariMain:
 	pushl	%ebp
 	movl	%esp, %ebp
 	call	_init_palette
-	movswl	4086,%edx
-	movswl	4084,%eax
-	pushl	%edx
+	movswl	4086,%eax
+	movswl	4084,%edx
 	pushl	%eax
+	pushl	%edx
 	pushl	4088
 	call	_init_screen
-	pushl	$_font_A.0
+	pushl	$_hankaku+1040
 	pushl	$13
-	pushl	$0
-	pushl	$0
+	pushl	$8
+	pushl	$8
 	movswl	4084,%eax
 	pushl	%eax
 	pushl	4088
 	call	_putfont8
 	addl	$36, %esp
+	pushl	$_hankaku+1056
+	pushl	$13
+	pushl	$8
+	pushl	$16
+	movswl	4084,%eax
+	pushl	%eax
+	pushl	4088
+	call	_putfont8
+	pushl	$_hankaku+1072
+	pushl	$13
+	pushl	$8
+	pushl	$24
+	movswl	4084,%eax
+	pushl	%eax
+	pushl	4088
+	call	_putfont8
+	addl	$48, %esp
+	pushl	$_hankaku+784
+	pushl	$13
+	pushl	$8
+	pushl	$40
+	movswl	4084,%eax
+	pushl	%eax
+	pushl	4088
+	call	_putfont8
+	pushl	$_hankaku+800
+	pushl	$13
+	pushl	$8
+	pushl	$48
+	movswl	4084,%eax
+	pushl	%eax
+	pushl	4088
+	call	_putfont8
+	addl	$48, %esp
+	pushl	$_hankaku+816
+	pushl	$13
+	pushl	$8
+	pushl	$56
+	movswl	4084,%eax
+	pushl	%eax
+	pushl	4088
+	call	_putfont8
+	addl	$24, %esp
 	leave
 	jmp	_hlt_loop
 	.data
-_table_rgb.1:
+_table_rgb.0:
 	.byte	0
 	.byte	0
 	.byte	0
@@ -99,7 +124,7 @@ _table_rgb.1:
 _init_palette:
 	pushl	%ebp
 	movl	%esp, %ebp
-	pushl	$_table_rgb.1
+	pushl	$_table_rgb.0
 	pushl	$15
 	pushl	$0
 	call	_set_palette
