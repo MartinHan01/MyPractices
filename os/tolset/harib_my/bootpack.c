@@ -1,5 +1,4 @@
 extern char hankaku[4096];
-
 void io_hlt(void);
 void write_mem8(int, int);
 int io_load_eflags(void);
@@ -11,7 +10,8 @@ void init_palette(void);
 void set_palette(int, int, char rgb[]);
 void hlt_loop(void);
 void boxfill8(char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
-void putfont8(char *vram, int xsize, int x, int y, unsigned char c, char *font);
+void putfont8_asc(char *vram, int xsize, int x, int y, unsigned char c, unsigned char *s);
+void putfont8(char *vram, int xsize, int x, int y, unsigned char c,char *font);
 void init_screen(char *vram, int x, int y);
 
 #define COL8_000000 0  /*  0:黒 */
@@ -31,15 +31,13 @@ void init_screen(char *vram, int x, int y);
 #define COL8_008484 14 /* 14:暗い水色 */
 #define COL8_848484 15 /* 15:暗い灰色 */
 
-struct BOOTINFO
-{
+struct BOOTINFO {
     char cyls, leds, vmode;
     short scrnx, scrny;
     char *vram;
 };
 
-void HariMain(void)
-{
+void HariMain(void) {
     char *vram;
     struct BOOTINFO *binfo;
     init_palette();
@@ -51,18 +49,13 @@ void HariMain(void)
     vram = binfo->vram;
 
     init_screen(vram, xsize, ysize);
-    putfont8(binfo->vram, binfo->scrnx, 8, 8, COL8_840084, hankaku + 'A' * 16);
-    putfont8(binfo->vram, binfo->scrnx, 16, 8, COL8_840084, hankaku + 'B' * 16);
-    putfont8(binfo->vram, binfo->scrnx, 24, 8, COL8_840084, hankaku + 'C' * 16);
-    putfont8(binfo->vram, binfo->scrnx, 40, 8, COL8_840084, hankaku + '1' * 16);
-    putfont8(binfo->vram, binfo->scrnx, 48, 8, COL8_840084, hankaku + '2' * 16);
-    putfont8(binfo->vram, binfo->scrnx, 56, 8, COL8_840084, hankaku + '3' * 16);
-
+    
+    putfont8_asc(binfo->vram, binfo->scrnx, 8, 8, COL8_848400,"ABC123456789");
+    putfont8(binfo->vram, binfo->scrnx, 100, 100, COL8_000084, hankaku + 'A' * 16);
     hlt_loop();
 }
 
-void init_palette(void)
-{
+void init_palette(void) {
     static unsigned char table_rgb[16 * 3] = {
         0x00, 0x00, 0x00, /*  0:黒 */
         0xff, 0x00, 0x00, /*  1:明るい赤 */
@@ -85,50 +78,35 @@ void init_palette(void)
     return;
 }
 
-void putfont8(char *vram, int xsize, int x, int y,unsigned char c, char *font)
+void putfont8_asc(char *vram, int xsize, int x, int y, unsigned char c, unsigned char *s) {
+    for (; *s != 0x00; s++)
+    {
+        putfont8(vram, xsize, x, y, c, hankaku + *s * 16);
+        x += 8;
+    }
+    return ;
+}
+
+void putfont8(char *vram, int xsize, int x, int y, unsigned char c, char *font)
 {
     int i;
     char d;
     for (i = 0; i < 16; i++)
     {
         d = font[i];
-        if ((d & 0x80))
-        {
-            vram[(y + i) * xsize + x + 0] = c;
-        }
-        if ((d & 0x40))
-        {
-            vram[(y + i) * xsize + x + 1] = c;
-        }
-        if ((d & 0x20))
-        {
-            vram[(y + i) * xsize + x + 2] = c;
-        }
-        if ((d & 0x10))
-        {
-            vram[(y + i) * xsize + x + 3] = c;
-        }
-        if ((d & 0x08))
-        {
-            vram[(y + i) * xsize + x + 4] = c;
-        }
-        if ((d & 0x04))
-        {
-            vram[(y + i) * xsize + x + 5] = c;
-        }
-        if ((d & 0x02))
-        {
-            vram[(y + i) * xsize + x + 6] = c;
-        }
-        if ((d & 0x01))
-        {
-            vram[(y + i) * xsize + x + 7] = c;
-        }
+        if ((d & 0x80)) { vram[(y + i) * xsize + x + 0] = c;}
+        if ((d & 0x40)) { vram[(y + i) * xsize + x + 1] = c;}
+        if ((d & 0x20)) { vram[(y + i) * xsize + x + 2] = c;}
+        if ((d & 0x10)) { vram[(y + i) * xsize + x + 3] = c;}
+        if ((d & 0x08)) { vram[(y + i) * xsize + x + 4] = c;}
+        if ((d & 0x04)) { vram[(y + i) * xsize + x + 5] = c;}
+        if ((d & 0x02)) { vram[(y + i) * xsize + x + 6] = c;}
+        if ((d & 0x01)) { vram[(y + i) * xsize + x + 7] = c;}
+
     }
 }
 
-void init_screen(char *vram, int x, int y)
-{
+void init_screen(char *vram, int x, int y) {
     boxfill8(vram, x, COL8_008484, 0, 0, x - 1, y - 29);
     boxfill8(vram, x, COL8_C6C6C6, 0, y - 28, x - 1, y - 28);
     boxfill8(vram, x, COL8_FFFFFF, 0, y - 27, x - 1, y - 27);
@@ -148,8 +126,7 @@ void init_screen(char *vram, int x, int y)
     return;
 }
 
-void set_palette(int start, int end, char rgb[])
-{
+void set_palette(int start, int end, char rgb[]) {
     int i, eflags;
     eflags = io_load_eflags();
     io_cli();
@@ -166,8 +143,7 @@ void set_palette(int start, int end, char rgb[])
     return;
 }
 
-void boxfill8(char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1)
-{
+void boxfill8(char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1) {
     int x, y;
     for (x = x0; x <= x1; x++)
     {
@@ -178,8 +154,7 @@ void boxfill8(char *vram, int xsize, unsigned char c, int x0, int y0, int x1, in
     }
 }
 
-void hlt_loop(void)
-{
+void hlt_loop(void) {
 fin:
     io_hlt();
     goto fin;
