@@ -18,6 +18,8 @@ void init_screen(char *vram, int x, int y);
 void init_mouse_cursor8(char *mouse, char bc);
 void putblock8_8(char *vram, int vxsize, int pxsize,
     int pysize, int px0, int py0, char *buf, int bxsize);
+void init_gdtidt(void);
+void set_segmdesc(struct SEGMENT_DESCRIPTOR *sd, unsigned int limit, int base, int ar);
 
 #define COL8_000000 0  /*  0:黒 */
 #define COL8_FF0000 1  /*  1:明るい赤 */
@@ -41,6 +43,18 @@ struct BOOTINFO {
     short scrnx, scrny;
     char *vram;
 };
+
+struct SEGMENT_DESCRIPTOR {
+    short limit_low, base_low;
+    char base_mid, access_right;
+    char limit_high, base_high;
+};
+
+struct GATE_DESCRIPTOR {
+    short offset_low,selector;
+    char dw_count, access_right;
+    short offset_high;
+}
 
 void HariMain(void) {
     char *vram;
@@ -222,4 +236,24 @@ void putblock8_8(char *vram, int vxsize, int pxsize,
 		}
 	}
 	return;
+}
+
+void init_gdtidt(void) {
+    struct SEGMENT_DESCRIPTOR *gdt = (struct SEGMENT_DESCRIPTOR *)0x00270000;
+    struct GATE_DESCRIPTOR *idt    = (struct GATE_DESCRIPTOR    *)0x0026f800;
+    int i;
+    for(i = 0; i < 8192; i++) {
+        set_segmdesc(gdt + i, 0, 0, 0);
+    }
+
+
+}
+
+void set_segmdesc(struct SEGMENT_DESCRIPTOR *gd, unsigned int limit, int base, int ar) {
+    gd->offset_low   = offset & 0xffff;
+    gd->selector     = selector;
+    gd->dw_count     = (ar >> 8) & 0xff;
+    gd->access_right = ar & 0xff;
+    gd->offset_high  = (offset >> 16) & 0xffff;
+    return ;
 }
