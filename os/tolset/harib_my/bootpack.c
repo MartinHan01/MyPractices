@@ -1,12 +1,34 @@
 #include <stdio.h>
 
+
 extern char hankaku[4096];
+struct BOOTINFO {
+    char cyls, leds, vmode;
+    short scrnx, scrny;
+    char *vram;
+};
+
+struct SEGMENT_DESCRIPTOR {
+    short limit_low, base_low;
+    char base_mid, access_right;
+    char limit_high, base_high;
+};
+
+struct GATE_DESCRIPTOR {
+    short offset_low,selector;
+    char dw_count, access_right;
+    short offset_high;
+};
+
 void io_hlt(void);
 void write_mem8(int, int);
 int io_load_eflags(void);
 void io_cli(void);
 void io_store_eflags(int eflags);
 void io_out8(int port, int data);
+void load_gdtr(int limit, int addr);
+void load_idtr(int limit, int addr);
+
 
 void init_palette(void);
 void set_palette(int, int, char rgb[]);
@@ -20,6 +42,9 @@ void putblock8_8(char *vram, int vxsize, int pxsize,
     int pysize, int px0, int py0, char *buf, int bxsize);
 void init_gdtidt(void);
 void set_segmdesc(struct SEGMENT_DESCRIPTOR *sd, unsigned int limit, int base, int ar);
+void set_gatedesc(struct GATE_DESCRIPTOR *gd, int offset, int selector, int ar);
+
+
 
 #define COL8_000000 0  /*  0:黒 */
 #define COL8_FF0000 1  /*  1:明るい赤 */
@@ -38,27 +63,12 @@ void set_segmdesc(struct SEGMENT_DESCRIPTOR *sd, unsigned int limit, int base, i
 #define COL8_008484 14 /* 14:暗い水色 */
 #define COL8_848484 15 /* 15:暗い灰色 */
 
-struct BOOTINFO {
-    char cyls, leds, vmode;
-    short scrnx, scrny;
-    char *vram;
-};
 
-struct SEGMENT_DESCRIPTOR {
-    short limit_low, base_low;
-    char base_mid, access_right;
-    char limit_high, base_high;
-};
-
-struct GATE_DESCRIPTOR {
-    short offset_low,selector;
-    char dw_count, access_right;
-    short offset_high;
-}
 
 void HariMain(void) {
     char *vram;
     struct BOOTINFO *binfo;
+    init_gdtidt();
     init_palette();
     binfo = (struct BOOTINFO *)0x0ff0;
 
@@ -69,7 +79,7 @@ void HariMain(void) {
     vram = binfo->vram;
     mx = (xsize - 16) / 2;
     my = (ysize - 28 - 16) / 2;
-
+    
     init_screen(vram, xsize, ysize);
     
     putfont8_asc(binfo->vram, binfo->scrnx, 8, 8, COL8_848400,"ABC 123");
@@ -245,15 +255,35 @@ void init_gdtidt(void) {
     for(i = 0; i < 8192; i++) {
         set_segmdesc(gdt + i, 0, 0, 0);
     }
-
-
-}
-
-void set_segmdesc(struct SEGMENT_DESCRIPTOR *gd, unsigned int limit, int base, int ar) {
-    gd->offset_low   = offset & 0xffff;
-    gd->selector     = selector;
-    gd->dw_count     = (ar >> 8) & 0xff;
-    gd->access_right = ar & 0xff;
-    gd->offset_high  = (offset >> 16) & 0xffff;
+    set_segmdesc(gdt + 1,0xffffffff, 0x00000000, 0x4092);
+    set_segmdesc(gdt + 2,0x0007ffff, 0x00280000, 0x409a);
+    load_gdtr(0xffff, 0x00270000);
+    for(i = 0; i < 256; i++) {
+        set_gatedesc(idt + i, 0, 0, 0);
+    }
+    load_idtr(0x7ff, 0x0026f800);
     return ;
 }
+
+void set_segmdesc(struct SEGMENT_DESCRIPTOR *sd, unsigned int limit, int base, int ar) {
+    if(limit > 0xffff) {
+        ar |= 0x8000;
+        limit /= 0x1000;
+    }
+    sd->limit_low = limit & 0xffff;
+    sd->base_low = base & 0xffff;
+    sd->base_mid = (base >> 16) & 0xff;
+    sd->access_right = ar & 0xff;
+    sd->limit_high = ((limit >> 16) & 0x0f) | ((ar >> 8) & 0xf0);
+    sd->base_high = (base >> 24) & 0xff;
+    return ;
+}
+
+void set_gatedesc(struct GATE_DESCRIPTOR *gd, int offset, int selector, int ar) {
+    gd->offset_low    = offset & 0xff;
+    gd->selector      = selector;
+    gd->dw_count      = (ar >> 8) & 0xff;
+    gd->access_right  = ar & 0xff;
+    gd->offset_high   = (offset >> 16) & 0xffff;
+}
+

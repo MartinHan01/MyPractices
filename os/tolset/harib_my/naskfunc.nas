@@ -8,7 +8,7 @@
 [FILE "naskfunc.nas"]
     GLOBAL      _io_hlt,_write_mem8,_io_load_eflags
     GLOBAL      _io_cli,_io_store_eflags,_io_out8
-
+    GLOBAL	    _load_gdtr, _load_idtr
 [SECTION .text]
 _io_hlt:    ;void io_hlt()
     HLT
@@ -38,4 +38,14 @@ _io_out8:    ;io_out8(int port,int data)
     MOV		EDX,[ESP+4]		; port
     MOV		AL,[ESP+8]		; data
     OUT		DX,AL
+    RET
+_load_gdtr:   ;void _load_gdtr(int limit, int addr)
+    MOV     AX,[ESP + 4]
+    MOV     [ESP + 6],AX
+    LGDT    [ESP + 6]
+    RET
+_load_idtr:   ;void _load_idtr(int limit, int addr)
+    MOV     AX, [ESP +4]
+    MOV     [ESP + 6],AX
+    LIDT    [ESP + 6]
     RET
