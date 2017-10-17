@@ -58,3 +58,4 @@ void set_gatedesc(struct GATE_DESCRIPTOR *gd, int offset, int selector, int ar);
 #define COL8_840084 13 /* 13:暗い紫 */
 #define COL8_008484 14 /* 14:暗い水色 */
 #define COL8_848484 15 /* 15:暗い灰色 */
+
