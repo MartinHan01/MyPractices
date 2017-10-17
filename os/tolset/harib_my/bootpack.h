@@ -16,13 +16,16 @@ void io_store_eflags(int eflags);
 void io_out8(int port, int data);
 void load_gdtr(int limit, int addr);
 void load_idtr(int limit, int addr);
+void asm_inthandler21(void);
+void asm_inthandler27(void);
+void io_sti(void);
 
 /* bootpack.c */
 void hlt_loop(void);
 
 /* graphic.c */
 void init_palette(void);
-void set_palette(int, int, char rgb[]);
+void set_palette(int, int, unsigned char *rgb);
 void boxfill8(char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
 void putfont8_asc(char *vram, int xsize, int x, int y, unsigned char c, unsigned char *s);
 void putfont8(char *vram, int xsize, int x, int y, unsigned char c,char *font);
@@ -30,6 +33,7 @@ void init_screen(char *vram, int x, int y);
 void init_mouse_cursor8(char *mouse, char bc);
 void putblock8_8(char *vram, int vxsize, int pxsize,
     int pysize, int px0, int py0, char *buf, int bxsize);
+void printtest(void);
 
 
 #define COL8_000000 0  /*  0:黒 */
@@ -78,6 +82,8 @@ void set_gatedesc(struct GATE_DESCRIPTOR *gd, int offset, int selector, int ar);
 
 /* int.c */
 void init_pic(void);
+void inthandler21(int *esp);
+void inthandler27(int *esp);
 #define PIC0_ICW1		0x0020
 #define PIC0_OCW2		0x0020
 #define PIC0_IMR		0x0021
@@ -90,3 +96,11 @@ void init_pic(void);
 #define PIC1_ICW2		0x00a1
 #define PIC1_ICW3		0x00a1
 #define PIC1_ICW4		0x00a1
+#define AR_INTGATE32	0x008e
+
+
+
+
+
+
+

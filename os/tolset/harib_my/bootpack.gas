@@ -1,11 +1,4 @@
 	.file	"bootpack.c"
-	.data
-LC0:
-	.ascii "ABC 123\0"
-LC1:
-	.ascii "MartinHan\0"
-LC2:
-	.ascii "scrnx = %d\0"
 	.text
 	.balign 2
 .globl _HariMain
@@ -15,69 +8,38 @@ _HariMain:
 	movl	%esp, %ebp
 	pushl	%edi
 	pushl	%esi
+	movl	$2, %esi
 	pushl	%ebx
-	movl	$2, %ebx
 	subl	$312, %esp
 	call	_init_gdtidt
+	call	_init_pic
+	call	_io_sti
 	call	_init_palette
 	movswl	4084,%ecx
 	movswl	4086,%eax
 	leal	-16(%ecx), %edi
 	movl	%eax, -320(%ebp)
 	movl	%edi, %eax
-	movl	-320(%ebp), %esi
+	movl	-320(%ebp), %ebx
 	cltd
-	idivl	%ebx
-	subl	$44, %esi
+	idivl	%esi
+	subl	$44, %ebx
 	movl	%eax, %edi
-	movl	%esi, %eax
+	movl	%ebx, %eax
 	cltd
-	idivl	%ebx
+	idivl	%esi
 	pushl	-320(%ebp)
 	pushl	%ecx
-	movl	%eax, %esi
+	movl	%eax, %ebx
 	pushl	4088
-	leal	-60(%ebp), %ebx
+	leal	-316(%ebp), %esi
 	call	_init_screen
-	pushl	$LC0
-	pushl	$11
-	pushl	$8
-	pushl	$8
-	movswl	4084,%eax
-	pushl	%eax
-	pushl	4088
-	call	_putfont8_asc
-	addl	$36, %esp
-	pushl	$LC1
-	pushl	$11
-	pushl	$24
-	pushl	$8
-	movswl	4084,%eax
-	pushl	%eax
-	pushl	4088
-	call	_putfont8_asc
-	movswl	4084,%eax
-	pushl	%eax
-	pushl	$LC2
-	pushl	%ebx
-	call	_sprintf
-	addl	$36, %esp
-	pushl	%ebx
-	leal	-316(%ebp), %ebx
-	pushl	$11
-	pushl	$40
-	pushl	$8
-	movswl	4084,%eax
-	pushl	%eax
-	pushl	4088
-	call	_putfont8_asc
 	pushl	$14
-	pushl	%ebx
-	call	_init_mouse_cursor8
-	addl	$32, %esp
-	pushl	$16
-	pushl	%ebx
 	pushl	%esi
+	call	_init_mouse_cursor8
+	pushl	$16
+	pushl	%esi
+	pushl	%ebx
 	pushl	%edi
 	pushl	$16
 	pushl	$16
@@ -85,7 +47,7 @@ _HariMain:
 	pushl	%eax
 	pushl	4088
 	call	_putblock8_8
-	addl	$32, %esp
+	addl	$52, %esp
 	call	_hlt_loop
 	leal	-12(%ebp), %esp
 	popl	%ebx
@@ -106,8 +68,8 @@ L3:
 	.def	_hlt_loop;	.scl	2;	.type	32;	.endef
 	.def	_putblock8_8;	.scl	2;	.type	32;	.endef
 	.def	_init_mouse_cursor8;	.scl	2;	.type	32;	.endef
-	.def	_sprintf;	.scl	2;	.type	32;	.endef
-	.def	_putfont8_asc;	.scl	2;	.type	32;	.endef
 	.def	_init_screen;	.scl	2;	.type	32;	.endef
 	.def	_init_palette;	.scl	2;	.type	32;	.endef
+	.def	_io_sti;	.scl	2;	.type	32;	.endef
+	.def	_init_pic;	.scl	2;	.type	32;	.endef
 	.def	_init_gdtidt;	.scl	2;	.type	32;	.endef

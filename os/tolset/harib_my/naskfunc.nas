@@ -8,7 +8,10 @@
 [FILE "naskfunc.nas"]
     GLOBAL      _io_hlt,_write_mem8,_io_load_eflags
     GLOBAL      _io_cli,_io_store_eflags,_io_out8
+    GLOBAL      _io_sti
     GLOBAL	    _load_gdtr, _load_idtr
+    GLOBAL	    _asm_inthandler21,_asm_inthandler27
+    EXTERN      _inthandler21,_inthandler27,_printtest
 [SECTION .text]
 _io_hlt:    ;void io_hlt()
     HLT
@@ -28,6 +31,10 @@ _io_load_eflags:  ;int io_load_eflags()
 _io_cli:    ;void io_cli()
     CLI
     RET
+
+_io_sti:	; void io_sti(void);
+		STI
+		RET
 
 _io_store_eflags:   ;void io_store_eflags(int)
     MOV     EAX,[ESP + 4]
@@ -49,3 +56,53 @@ _load_idtr:   ;void _load_idtr(int limit, int addr)
     MOV     [ESP + 6],AX
     LIDT    [ESP + 6]
     RET
+
+_asm_inthandler21:
+    PUSH    ES
+    PUSH    DS
+    PUSHAD
+    MOV     EAX,ESP
+    PUSH    EAX
+    MOV     AX,SS
+    MOV     DS,AX
+    MOV     ES,AX
+    CALL    _inthandler21
+    POP     EAX
+    POPAD
+    POP     DS
+    POP     ES
+    IRETD
+_asm_inthandler21:
+		PUSH	ES
+		PUSH	DS
+		PUSHAD
+		MOV		EAX,ESP
+		PUSH	EAX
+		MOV		AX,SS
+		MOV		DS,AX
+		MOV		ES,AX
+        CALL    _printtest
+		CALL	_inthandler21
+		POP		EAX
+		POPAD
+		POP		DS
+		POP		ES
+		IRETD
+
+
+_asm_inthandler27:
+		PUSH	ES
+		PUSH	DS
+		PUSHAD
+		MOV		EAX,ESP
+		PUSH	EAX
+		MOV		AX,SS
+		MOV		DS,AX
+		MOV		ES,AX
+        CALL    _printtest
+		CALL	_inthandler27
+		POP		EAX
+		POPAD
+		POP		DS
+		POP		ES
+		IRETD

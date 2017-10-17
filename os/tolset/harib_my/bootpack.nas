@@ -4,21 +4,14 @@
 [OPTION 1]
 [BITS 32]
 	EXTERN	_init_gdtidt
+	EXTERN	_init_pic
+	EXTERN	_io_sti
 	EXTERN	_init_palette
 	EXTERN	_init_screen
-	EXTERN	_putfont8_asc
-	EXTERN	_sprintf
 	EXTERN	_init_mouse_cursor8
 	EXTERN	_putblock8_8
 	EXTERN	_io_hlt
 [FILE "bootpack.c"]
-[SECTION .data]
-LC0:
-	DB	"ABC 123",0x00
-LC1:
-	DB	"MartinHan",0x00
-LC2:
-	DB	"scrnx = %d",0x00
 [SECTION .text]
 	GLOBAL	_HariMain
 _HariMain:
@@ -26,69 +19,38 @@ _HariMain:
 	MOV	EBP,ESP
 	PUSH	EDI
 	PUSH	ESI
+	MOV	ESI,2
 	PUSH	EBX
-	MOV	EBX,2
 	SUB	ESP,312
 	CALL	_init_gdtidt
+	CALL	_init_pic
+	CALL	_io_sti
 	CALL	_init_palette
 	MOVSX	ECX,WORD [4084]
 	MOVSX	EAX,WORD [4086]
 	LEA	EDI,DWORD [-16+ECX]
 	MOV	DWORD [-320+EBP],EAX
 	MOV	EAX,EDI
-	MOV	ESI,DWORD [-320+EBP]
+	MOV	EBX,DWORD [-320+EBP]
 	CDQ
-	IDIV	EBX
-	SUB	ESI,44
+	IDIV	ESI
+	SUB	EBX,44
 	MOV	EDI,EAX
-	MOV	EAX,ESI
+	MOV	EAX,EBX
 	CDQ
-	IDIV	EBX
+	IDIV	ESI
 	PUSH	DWORD [-320+EBP]
 	PUSH	ECX
-	MOV	ESI,EAX
+	MOV	EBX,EAX
 	PUSH	DWORD [4088]
-	LEA	EBX,DWORD [-60+EBP]
+	LEA	ESI,DWORD [-316+EBP]
 	CALL	_init_screen
-	PUSH	LC0
-	PUSH	11
-	PUSH	8
-	PUSH	8
-	MOVSX	EAX,WORD [4084]
-	PUSH	EAX
-	PUSH	DWORD [4088]
-	CALL	_putfont8_asc
-	ADD	ESP,36
-	PUSH	LC1
-	PUSH	11
-	PUSH	24
-	PUSH	8
-	MOVSX	EAX,WORD [4084]
-	PUSH	EAX
-	PUSH	DWORD [4088]
-	CALL	_putfont8_asc
-	MOVSX	EAX,WORD [4084]
-	PUSH	EAX
-	PUSH	LC2
-	PUSH	EBX
-	CALL	_sprintf
-	ADD	ESP,36
-	PUSH	EBX
-	LEA	EBX,DWORD [-316+EBP]
-	PUSH	11
-	PUSH	40
-	PUSH	8
-	MOVSX	EAX,WORD [4084]
-	PUSH	EAX
-	PUSH	DWORD [4088]
-	CALL	_putfont8_asc
 	PUSH	14
-	PUSH	EBX
-	CALL	_init_mouse_cursor8
-	ADD	ESP,32
-	PUSH	16
-	PUSH	EBX
 	PUSH	ESI
+	CALL	_init_mouse_cursor8
+	PUSH	16
+	PUSH	ESI
+	PUSH	EBX
 	PUSH	EDI
 	PUSH	16
 	PUSH	16
@@ -96,7 +58,7 @@ _HariMain:
 	PUSH	EAX
 	PUSH	DWORD [4088]
 	CALL	_putblock8_8
-	ADD	ESP,32
+	ADD	ESP,52
 	CALL	_hlt_loop
 	LEA	ESP,DWORD [-12+EBP]
 	POP	EBX
