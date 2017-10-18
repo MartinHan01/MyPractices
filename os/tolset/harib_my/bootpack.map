@@ -1,5 +1,5 @@
-text size :   3335(0x00D07)
-data size :   4508(0x0119C)
+text size :   3362(0x00D22)
+data size :   4482(0x01182)
 bss  size :      0(0x00000)
 
 0x00000000 : (.text)
@@ -39,16 +39,16 @@ bss  size :      0(0x00000)
 0x0000070C : _init_pic
 0x0000070C : (.text)
 0x000007A1 : _inthandler21
-0x000007EC : _inthandler2c
-0x00000837 : _inthandler27
-0x00000845 : (.text)
-0x00000845 : _HariStartup
-0x0000084E : _sprintf
-0x0000084E : (.text)
-0x00000862 : (.text)
-0x0000089E : _strtoul0
-0x00000971 : (.text)
-0x00000999 : _vsprintf
+0x00000807 : _inthandler2c
+0x00000852 : _inthandler27
+0x00000860 : (.text)
+0x00000860 : _HariStartup
+0x00000869 : _sprintf
+0x00000869 : (.text)
+0x0000087D : (.text)
+0x000008B9 : _strtoul0
+0x0000098C : (.text)
+0x000009B4 : _vsprintf
 0x00000000 : (.data)
 0x00000000 : (.data)
 0x00000000 : (.data)
@@ -59,7 +59,7 @@ bss  size :      0(0x00000)
 0x00310010 : _hankaku
 0x00311010 : (.data)
 0x00311140 : (.data)
-0x0031117C : (.data)
+0x00311162 : (.data)
 0x00000000 : (.bss)
 0x00000000 : (.bss)
 0x00000000 : (.bss)
