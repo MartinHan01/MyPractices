@@ -1,38 +1,31 @@
-#include <stdio.h>
+/* bootpackのメイン */
+
 #include "bootpack.h"
+#include <stdio.h>
 
-void HariMain(void) {
-    char *vram;
-    struct BOOTINFO *binfo;
-    init_gdtidt();
-    init_pic();
-    io_sti();
-    
-    init_palette();
-    binfo = (struct BOOTINFO *)ADR_BOOTINFO;
+void HariMain(void)
+{
+	struct BOOTINFO *binfo = (struct BOOTINFO *) ADR_BOOTINFO;
+	char s[40], mcursor[256];
+	int mx, my;
 
-    char buf[40],mcursor[256];;
-    int xsize, ysize,mx,my;
-    xsize = binfo->scrnx;
-    ysize = binfo->scrny;
-    vram = binfo->vram;
-    mx = (xsize - 16) / 2;
-    my = (ysize - 28 - 16) / 2;
-    
-    init_screen(vram, xsize, ysize);
-    
-    // putfont8_asc(binfo->vram, binfo->scrnx, 8, 8, COL8_848400,"ABC 123");
-    // putfont8_asc(binfo->vram, binfo->scrnx, 8, 24, COL8_848400,"MartinHan");
-    // sprintf(buf, "scrnx = %d", binfo->scrnx);
-    // putfont8_asc(binfo->vram, binfo->scrnx, 8, 40, COL8_848400,buf);
-    init_mouse_cursor8(mcursor, COL8_008484);
-    putblock8_8(binfo->vram, binfo->scrnx, 16, 16, mx, my, mcursor, 16);
-    
-    hlt_loop();
-}
+	init_gdtidt();
+	init_pic();
+	io_sti(); /* IDT/PICの初期化が終わったのでCPUの割り込み禁止を解除 */
 
-void hlt_loop(void) {
-fin:
-    io_hlt();
-    goto fin;
+	init_palette();
+	init_screen8(binfo->vram, binfo->scrnx, binfo->scrny);
+	mx = (binfo->scrnx - 16) / 2; /* 画面中央になるように座標計算 */
+	my = (binfo->scrny - 28 - 16) / 2;
+	init_mouse_cursor8(mcursor, COL8_008484);
+	putblock8_8(binfo->vram, binfo->scrnx, 16, 16, mx, my, mcursor, 16);
+	sprintf(s, "(%d, %d)", mx, my);
+	putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
+
+	io_out8(PIC0_IMR, 0xf9); /* PIC1とキーボードを許可(11111001) */
+	io_out8(PIC1_IMR, 0xef); /* マウスを許可(11101111) */
+
+	for (;;) {
+		io_hlt();
+	}
 }
