@@ -11,7 +11,7 @@ void HariMain(void) {
     init_palette();
     binfo = (struct BOOTINFO *)ADR_BOOTINFO;
 
-    char buf[40],mcursor[256];;
+    char mcursor[256];;
     int xsize, ysize,mx,my;
     xsize = binfo->scrnx;
     ysize = binfo->scrny;

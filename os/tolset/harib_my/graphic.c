@@ -153,3 +153,4 @@ void printtest(void) {
     struct BOOTINFO *binfo = (struct BOOTINFO *)ADR_BOOTINFO;
     putfont8_asc(binfo->vram, binfo->scrnx, 0,0, COL8_848400,"MartinHanTest123");
 }
+
