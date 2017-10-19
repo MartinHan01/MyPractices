@@ -6,8 +6,8 @@ extern struct FIFO8 keyfifo;
 void HariMain(void)
 {
 	struct BOOTINFO *binfo = (struct BOOTINFO *) ADR_BOOTINFO;
-	char s[40], mcursor[256];
-	int mx, my;
+	char s[40], mcursor[256], keybuf[32];
+	int mx, my, i;
 
 	init_gdtidt();
 	init_pic();
@@ -27,6 +27,8 @@ void HariMain(void)
 	io_out8(PIC0_IMR, 0xf9); 
 	io_out8(PIC1_IMR, 0xef); 
 
+    enable_mouse();
+
 	for (;;) {
 		io_cli();
 		if (fifo8_status(&keyfifo) == 0) {
@@ -40,3 +42,38 @@ void HariMain(void)
 		}
 	}
 }
+
+
+
+#define PORT_KEYDAT				0x0060
+#define PORT_KEYSTA				0x0064
+#define PORT_KEYCMD				0x0064
+#define KEYSTA_SEND_NOTREADY	0x02
+#define KEYCMD_WRITE_MODE		0x60
+#define KBC_MODE				0x47
+
+
+void wait_KBC_sendready(void)
+{
+	/* キーボードコントローラがデータ送信可能になるのを待つ */
+	for (;;) {
+		if ((io_in8(PORT_KEYSTA) & KEYSTA_SEND_NOTREADY) == 0) {
+			break;
+		}
+	}
+	return;
+}
+
+#define KEYCMD_SENDTO_MOUSE		0xd4
+#define MOUSECMD_ENABLE			0xf4
+
+void enable_mouse(void)
+{
+	/* マウス有効 */
+	wait_KBC_sendready();
+	io_out8(PORT_KEYCMD, KEYCMD_SENDTO_MOUSE);
+	wait_KBC_sendready();
+	io_out8(PORT_KEYDAT, MOUSECMD_ENABLE);
+	return;
+}
+

@@ -11,7 +11,7 @@ void fifo8_init(struct FIFO8 *fifo, int size, unsigned char *buf)
     return ;
 }
 
-int fifo8_put(struct FIFO8 *fifo, unsigned char data）
+int fifo8_put(struct FIFO8 *fifo, unsigned char data)
 {   
     if(fifo->free == 0) {
         fifo->flags |= FLAGS_OVERRUN;
