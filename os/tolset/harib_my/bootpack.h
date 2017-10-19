@@ -109,5 +109,6 @@ int fifo8_status(struct FIFO8 *fifo);
 /* bootpack.h */
 void enable_mouse(void);
 void wait_KBC_sendready(void);
+void init_keyboard(void);
 
 

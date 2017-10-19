@@ -12,20 +12,24 @@ void HariMain(void)
 	init_gdtidt();
 	init_pic();
 	io_sti(); 
+    fifo8_init(&keyfifo, 32, keybuf);
+    io_out8(PIC0_IMR, 0xf9); 
+	io_out8(PIC1_IMR, 0xef);
+
+    init_keyboard();
 
 	init_palette();
 	init_screen8(binfo->vram, binfo->scrnx, binfo->scrny);
 	mx = (binfo->scrnx - 16) / 2; 
 	my = (binfo->scrny - 28 - 16) / 2;
     init_mouse_cursor8(mcursor, COL8_008484);
-    fifo8_init(&keyfifo, 32, keybuf);
+    
 
 	putblock8_8(binfo->vram, binfo->scrnx, 16, 16, mx, my, mcursor, 16);
 	sprintf(s, "(%d, %d)", mx, my);
 	putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
 
-	io_out8(PIC0_IMR, 0xf9); 
-	io_out8(PIC1_IMR, 0xef); 
+	 
 
     enable_mouse();
 
@@ -77,3 +81,12 @@ void enable_mouse(void)
 	return;
 }
 
+void init_keyboard(void)
+{
+	/* �L�[�{�[�h�R���g���[���̏����� */
+	wait_KBC_sendready();
+	io_out8(PORT_KEYCMD, KEYCMD_WRITE_MODE);
+	wait_KBC_sendready();
+	io_out8(PORT_KEYDAT, KBC_MODE);
+	return;
+}
