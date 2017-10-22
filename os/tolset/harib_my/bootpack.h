@@ -107,8 +107,13 @@ int fifo8_get(struct FIFO8 *fifo);
 int fifo8_status(struct FIFO8 *fifo);
 
 /* bootpack.h */
-void enable_mouse(void);
+
+struct MOUSE_DEC {
+	unsigned char buf[3], phase;
+};
+
+void enable_mouse(struct MOUSE_DEC *mdec);
 void wait_KBC_sendready(void);
 void init_keyboard(void);
-
+int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 
