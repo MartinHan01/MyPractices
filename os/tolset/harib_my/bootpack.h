@@ -1,3 +1,16 @@
+#define PORT_KEYDAT				0x0060
+#define PORT_KEYSTA				0x0064
+#define PORT_KEYCMD				0x0064
+#define KEYSTA_SEND_NOTREADY	0x02
+#define KEYCMD_WRITE_MODE		0x60
+#define KBC_MODE				0x47
+
+
+
+#define KEYCMD_SENDTO_MOUSE		0xd4
+#define MOUSECMD_ENABLE			0xf4
+
+
 /* asmhead.nas */
 struct BOOTINFO {  
 	char cyls;     
@@ -76,9 +89,7 @@ void set_gatedesc(struct GATE_DESCRIPTOR *gd, int offset, int selector, int ar);
 
 /* int.c */
 void init_pic(void);
-void inthandler21(int *esp);
-void inthandler27(int *esp);
-void inthandler2c(int *esp);
+
 #define PIC0_ICW1		0x0020
 #define PIC0_OCW2		0x0020
 #define PIC0_IMR		0x0021
@@ -109,7 +120,8 @@ int fifo8_status(struct FIFO8 *fifo);
 /* bootpack.h */
 
 struct MOUSE_DEC {
-	unsigned char buf[3], phase;
+    unsigned char buf[3], phase;
+    int x, y, btn;
 };
 
 void enable_mouse(struct MOUSE_DEC *mdec);
@@ -117,3 +129,7 @@ void wait_KBC_sendready(void);
 void init_keyboard(void);
 int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 
+/* mouse */
+void inthandler21(int *esp);
+void inthandler27(int *esp);
+void inthandler2c(int *esp);
