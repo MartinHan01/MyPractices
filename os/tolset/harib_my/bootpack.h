@@ -136,3 +136,16 @@ int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 void inthandler21(int *esp);
 void inthandler27(int *esp);
 void inthandler2c(int *esp);
+
+/* memory.c */
+#define MEMMAN_FREES		4090	/* これで約32KB */
+#define MEMMAN_ADDR			0x003c0000
+
+struct FREEINFO {	/* あき情報 */
+	unsigned int addr, size;
+};
+
+struct MEMMAN {		/* メモリ管理 */
+	int frees, maxfrees, lostsize, losts;
+	struct FREEINFO free[MEMMAN_FREES];
+};
