@@ -1,0 +1,93 @@
+(+ 2 2)
+
+(+ 2 (+ 1 1))
+
+(+ 3 (+ 1 2))
+
+(setq my-name "MartinHan")
+
+(insert "Hello!")
+
+(insert "Hello" "World")
+
+(insert "Hello i am " my-name)
+
+(hello my-name)
+
+(defun hello (name) (insert "Hello " name))
+
+(hello "you")
+
+(switch-to-buffer-other-window "*test*")
+
+(progn
+  (switch-to-buffer-other-window "*test*")
+  (hello "you"))
+
+(progn
+  (switch-to-buffer-other-window "*test*")
+  (erase-buffer)
+  (hello "there"))
+
+(progn
+  (switch-to-buffer-other-window "*test*")
+  (erase-buffer)
+  (hello "you")
+  (other-window 1))
+
+(let ((local-name "you"))
+  (switch-to-buffer-other-window "*test*")
+  (erase-buffer)
+  (hello local-name)
+  (other-window 1))
+
+(format "Hello %s!\n" "visitor")
+
+(defun hello (name)
+  (insert (format "Hello %s!\n" name)))
+
+(defun greeting (name)
+  (let ((your-name "Bastien"))
+    (insert (format "Hello %s!\n\n I am %s."
+                    name
+                    your-name))))
+
+(greeting "you")
+
+(defun greeting (from-name)
+  (let ((your-name (read-from-minibuffer "Enter your name: ")))
+        (insert (format "Hello!\n\nI am %s and you are %s."
+                        from-name
+                        your-name
+                        ))))
+(greeting "Bob")
+
+(defun greeing (from-name)
+  (let ((your-name (read-from-minibuffer "Enter your name: ")))
+    (switch-to-buffer-other-window "*test*")
+    (erase-buffer)
+    (insert (format "Hello %s!\n\nI am %s." your-name from-name))
+    (other-window 1)))
+
+(greeting "MartinHan")Hello!
+
+I am MartinHan and you are Bob.
+
+(setq list-of-names '("Sarah" "Chloe" "Mathilde"))
+
+(car list-of-names)
+
+(cdr list-of-names)
+
+(push "Stephanie" list-of-names)
+
+(mapcar 'hello list-of-names)
+
+(defun greeting ()
+  (switch-to-buffer-other-window "*test*")
+  (erase-buffer)
+  (mapcar 'hello list-of-names)
+  (other-window 1))
+
+(greeting)
+
