@@ -43,7 +43,7 @@ void QuickSortMiddleBase(int array[], int begin, int end) {
         }
     }
     array[left_pos] = base_value;
-    PrintArray(array, 9);
+    //PrintArray(array, 9);
     QuickSortMiddleBase(array, begin, left_pos - 1);
     QuickSortMiddleBase(array, left_pos + 1, end);
 }
@@ -72,8 +72,8 @@ void QuickSort(int array[], int begin, int end) {
     }
     //array[left_pos] = base_value;
     //array[base_pos] = temp_val;
-    printf("sort result:");
-    PrintArray(array, 9);
+    //printf("sort result:");
+    //PrintArray(array, 9);
     QuickSort(array, begin, left_pos);
     QuickSort(array, left_pos + 1, end);
 
