@@ -6,3 +6,7 @@
 *.bin
 *.gas
 *.img
+*.o
+*.exe
+*/bin/*
+*/obj/*
