@@ -7,15 +7,17 @@ int main()
 {
     cout << "Hello world!" << endl;
     SeqList L;
-    L.data = new ElemType[InitSize];
-    L.length = InitSize;
-    for(int i = 0 ; i < InitSize; i++) {
-        L.data[i] = i;
-    }
+    InitList(L);
     printList(L);
     return 0;
 }
-
+void InitList(SeqList &l) {
+    l.data = new ElemType[InitSize];
+    l.length = InitSize;
+    for(int i = 0 ; i < InitSize; i++) {
+        l.data[i] = i;
+    }
+}
 
 void printList(SeqList &l) {
     for(int i = 0; i < l.length; i++) {

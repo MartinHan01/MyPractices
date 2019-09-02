@@ -9,6 +9,7 @@ typedef struct {
     int MaxSize, length;
 } SeqList;
 
+void InitList(SeqList &l);
 void printList(SeqList &l);
 
 
