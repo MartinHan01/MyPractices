@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1567426305 source:c:\mycode\mypractices\master_technical\chapter2\linearlist\main.cpp
+	<iostream>
+	"main.h"
+
+1567425755 c:\mycode\mypractices\master_technical\chapter2\linearlist\main.h
+
