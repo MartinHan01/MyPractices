@@ -1,7 +1,7 @@
 #ifndef MAIN_H_INCLUDED
 #define MAIN_H_INCLUDED
 
-#define InitSize 100
+#define InitSize 30
 #define ElemType int
 
 typedef struct {
@@ -11,7 +11,8 @@ typedef struct {
 
 void InitList(SeqList &l);
 void printList(SeqList &l);
-
-
+bool ListInsert(SeqList &L, int i, ElemType e);
+bool ListDelete(SeqList &L, int i, ElemType &e);
+int LocateElem(SeqList &L, ElemType e);
 
 #endif // MAIN_H_INCLUDED
