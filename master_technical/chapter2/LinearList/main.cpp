@@ -1,6 +1,7 @@
 #include <iostream>
 #include "main.h"
 
+
 using namespace std;
 
 int main()
@@ -16,6 +17,10 @@ int main()
     cout << "del:" << del << endl;
     printList(L);
     cout << "Elem 3 locate:" << LocateElem(L, 3) << endl;
+    cout << "deleteMin value" << endl;
+    ElemType minVal = deleteMin(L);
+    cout << "minVal is " << minVal << endl;
+    printList(L);
     return 0;
 }
 void InitList(SeqList &l) {
@@ -68,4 +73,22 @@ int LocateElem(SeqList &L, ElemType e) {
         }
     }
     return 0;
+}
+ElemType deleteMin(SeqList &L) {
+    if(L.length == 0) {
+        return NULL;
+    }
+    ElemType minVal = L.data[0];
+    int index = 0;
+    for(int i = 1 ; i < L.length; i++) {
+        if(L.data[i] < minVal) {
+            minVal = L.data[i];
+            index = i;
+        }
+    }
+    for(int i = index; i< L.length - 1; i++) {
+        L.data[i] = L.data[i + 1];
+    }
+    L.length--;
+    return minVal;
 }

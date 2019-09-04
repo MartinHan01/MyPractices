@@ -14,5 +14,6 @@ void printList(SeqList &l);
 bool ListInsert(SeqList &L, int i, ElemType e);
 bool ListDelete(SeqList &L, int i, ElemType &e);
 int LocateElem(SeqList &L, ElemType e);
+ElemType deleteMin(SeqList &L);
 
 #endif // MAIN_H_INCLUDED
