@@ -21,6 +21,9 @@ int main()
     ElemType minVal = deleteMin(L);
     cout << "minVal is " << minVal << endl;
     printList(L);
+    cout << "reverse List" << endl;
+    reverseList(L);
+    printList(L);
     return 0;
 }
 void InitList(SeqList &l) {
@@ -91,4 +94,23 @@ ElemType deleteMin(SeqList &L) {
     }
     L.length--;
     return minVal;
+}
+
+void reverseList(SeqList &L) {
+    if(L.length == 0) {
+        return ;
+    }
+    int tmp;
+
+    for(int i = 0 ; i < L.length / 2; i++) {
+        tmp = L.data[i];
+        L.data[i] = L.data[L.length - i - 1];
+        L.data[L.length - i - 1] = tmp;
+    }
+}
+
+void deleteListItem(SeqList &L) {
+    if(L.length == 0) {
+        return ;
+    }
 }
