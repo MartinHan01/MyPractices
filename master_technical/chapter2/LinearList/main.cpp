@@ -24,6 +24,10 @@ int main()
     cout << "reverse List" << endl;
     reverseList(L);
     printList(L);
+    int deleteVal = 3;
+    cout << "delete Item " << deleteVal << endl;
+    deleteItem(L, deleteVal);
+    printList(L);
     return 0;
 }
 void InitList(SeqList &l) {
@@ -112,5 +116,38 @@ void reverseList(SeqList &L) {
 void deleteListItem(SeqList &L) {
     if(L.length == 0) {
         return ;
+    }
+}
+
+void deleteItem(SeqList &L, ElemType e) {
+    int fixLength = L.length;
+    for(int i = 0; i < fixLength; i++) {
+        ElemType item = L.data[i];
+        if(item == e) {
+            for(int j = i; j < fixLength - 1; j++) {
+                L.data[j] = L.data[j + 1];
+            }
+            fixLength--;
+            L.length--;
+        }
+
+    }
+}
+
+void deleteItemIn(SeqList &L, ElemType startNum, ElemType endNum) {
+    if(startNum > endNum) {
+        return ;
+    }
+    int startIndex, endIndex;
+    for(int i = 0 ; i < L.length;i++) {
+        // TODO
+        if(L.data[i] > startNum) {
+            startIndex = i;
+        }
+        if(L.data[i] > L.data[i]) {
+            endIndex = i - 1;
+        }
+
+
     }
 }

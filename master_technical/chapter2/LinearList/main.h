@@ -17,5 +17,7 @@ int LocateElem(SeqList &L, ElemType e);
 ElemType deleteMin(SeqList &L);
 void reverseList(SeqList &L);
 void deleteListItem(SeqList &L);
+void deleteItem(SeqList &L, ElemType e);
+void deleteItemIn(SeqList &L, ElemType startNum, ElemType endNum);
 
 #endif // MAIN_H_INCLUDED
