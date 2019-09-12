@@ -28,6 +28,10 @@ int main()
     cout << "delete Item " << deleteVal << endl;
     deleteItem(L, deleteVal);
     printList(L);
+    int minVal = 5,maxVal = 8;
+    cout << "delete Item in " << minVal << "," << maxVal << endl;
+
+    printList(L);
     return 0;
 }
 void InitList(SeqList &l) {
