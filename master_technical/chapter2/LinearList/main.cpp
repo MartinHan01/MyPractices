@@ -28,10 +28,12 @@ int main()
     cout << "delete Item " << deleteVal << endl;
     deleteItem(L, deleteVal);
     printList(L);
-    int minVal = 5,maxVal = 8;
-    cout << "delete Item in " << minVal << "," << maxVal << endl;
-
+    cout << "sort list" << endl;
+    sortList(L);
     printList(L);
+//    int minValInt = 5,maxValInt = 8;
+//    cout << "delete Item in " << minValInt << "," << maxValInt << endl;
+//    printList(L);
     return 0;
 }
 void InitList(SeqList &l) {
@@ -154,4 +156,34 @@ void deleteItemIn(SeqList &L, ElemType startNum, ElemType endNum) {
 
 
     }
+}
+
+void quickSortList(SeqList &L, int startIndex, int endIndex) {
+    if(startIndex >= endIndex) {
+        return ;
+    }
+    int i = startIndex, j = endIndex, s = L.data[startIndex];
+    while(i < j) {
+        while(i < j && L.data[j] > s) {
+            j--;
+        }
+        if(i < j) {
+            L.data[i++] = L.data[j];
+        }
+        while(i < j && L.data[i] < s) {
+            i++;
+        }
+        if(i < j) {
+            L.data[j--] = L.data[i];
+        }
+    }
+    L.data[i] = s;
+    quickSortList(L, startIndex, i);
+    quickSortList(L, i + 1, endIndex);
+}
+
+void sortList(SeqList &L) {
+    int startIndex = 0;
+    int endIndex = L.length - 1;
+    quickSortList(L,startIndex, endIndex);
 }

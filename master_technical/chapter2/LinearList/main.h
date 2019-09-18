@@ -19,5 +19,6 @@ void reverseList(SeqList &L);
 void deleteListItem(SeqList &L);
 void deleteItem(SeqList &L, ElemType e);
 void deleteItemIn(SeqList &L, ElemType startNum, ElemType endNum);
-
+void sortList(SeqList &L);
+void quickSortList(SeqList &L, int startIndex, int endIndex);
 #endif // MAIN_H_INCLUDED
