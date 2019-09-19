@@ -31,9 +31,13 @@ int main()
     cout << "sort list" << endl;
     sortList(L);
     printList(L);
-//    int minValInt = 5,maxValInt = 8;
-//    cout << "delete Item in " << minValInt << "," << maxValInt << endl;
-//    printList(L);
+    int minValInt = 5,maxValInt = 8;
+    cout << "delete Item in " << minValInt << "," << maxValInt << endl;
+    deleteItemIn(L, minValInt, maxValInt);
+    printList(L);
+    cout << "Init List" << endl;
+    InitList2(L);
+    printList(L);
     return 0;
 }
 void InitList(SeqList &l) {
@@ -42,6 +46,15 @@ void InitList(SeqList &l) {
     l.length = length;
     for(int i = 0 ; i < length; i++) {
         l.data[i] = i;
+    }
+}
+
+void InitList2(SeqList &l) {
+    l.data = new ElemType[InitSize];
+    int length = 10;
+    l.length = length;
+    for(int i = 0 ; i < length; i++) {
+        l.data[i] = i % 3;
     }
 }
 
@@ -144,18 +157,21 @@ void deleteItemIn(SeqList &L, ElemType startNum, ElemType endNum) {
     if(startNum > endNum) {
         return ;
     }
-    int startIndex, endIndex;
+    int startIndex = -1, endIndex = -1;
+    int middleLen = -1;
     for(int i = 0 ; i < L.length;i++) {
-        // TODO
-        if(L.data[i] > startNum) {
+        if(L.data[i] >= startNum && startIndex == -1) {
             startIndex = i;
         }
-        if(L.data[i] > L.data[i]) {
-            endIndex = i - 1;
+        if(L.data[i] > endNum && endIndex == -1) {
+            endIndex = i;
+            middleLen = endIndex - startIndex;
         }
-
-
+        if(startIndex != -1 && endIndex != -1) {
+            L.data[i - middleLen] = L.data[i];
+        }
     }
+    L.length = L.length - middleLen;
 }
 
 void quickSortList(SeqList &L, int startIndex, int endIndex) {
@@ -186,4 +202,17 @@ void sortList(SeqList &L) {
     int startIndex = 0;
     int endIndex = L.length - 1;
     quickSortList(L,startIndex, endIndex);
+}
+
+void deleteDuplicate(SeqList &L) {
+    for(int i = 0 ; i < L.length - 1; i++) {
+        int val = L.data[i];
+        int length = L.length;
+        for(int j = i + 1; j < length; j==) {
+            if(L.data[j] == val) {
+
+                length--;
+            }
+        }
+    }
 }

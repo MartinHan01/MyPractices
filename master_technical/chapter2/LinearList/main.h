@@ -10,6 +10,7 @@ typedef struct {
 } SeqList;
 
 void InitList(SeqList &l);
+void InitList2(SeqList &l);
 void printList(SeqList &l);
 bool ListInsert(SeqList &L, int i, ElemType e);
 bool ListDelete(SeqList &L, int i, ElemType &e);
@@ -21,4 +22,5 @@ void deleteItem(SeqList &L, ElemType e);
 void deleteItemIn(SeqList &L, ElemType startNum, ElemType endNum);
 void sortList(SeqList &L);
 void quickSortList(SeqList &L, int startIndex, int endIndex);
+void deleteDuplicate(SeqList &L);
 #endif // MAIN_H_INCLUDED
