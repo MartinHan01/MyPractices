@@ -38,6 +38,8 @@ int main()
     cout << "Init List" << endl;
     InitList2(L);
     printList(L);
+    deleteDuplicate(L);
+    printList(L);
     return 0;
 }
 void InitList(SeqList &l) {
@@ -204,14 +206,17 @@ void sortList(SeqList &L) {
     quickSortList(L,startIndex, endIndex);
 }
 
+//´ÓºóÍùÇ°É¾
 void deleteDuplicate(SeqList &L) {
-    for(int i = 0 ; i < L.length - 1; i++) {
-        int val = L.data[i];
-        int length = L.length;
-        for(int j = i + 1; j < length; j==) {
-            if(L.data[j] == val) {
-
-                length--;
+    for(int i = L.length - 1; i > 0 ; i--) {
+        ElemType item = L.data[i];
+        for(int j = i - 1; j >= 0; j--) {
+            if(item == L.data[j]) {
+                for(int k = j; k < L.length - 1; k++) {
+                    L.data[k] = L.data[k + 1];
+                }
+                L.length--;
+                i--;
             }
         }
     }
