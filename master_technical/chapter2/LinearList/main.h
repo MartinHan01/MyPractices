@@ -23,4 +23,6 @@ void deleteItemIn(SeqList &L, ElemType startNum, ElemType endNum);
 void sortList(SeqList &L);
 void quickSortList(SeqList &L, int startIndex, int endIndex);
 void deleteDuplicate(SeqList &L);
+void mergeList(SeqList &L1, SeqList &L2,SeqList &L3);
+void InitListBySize(SeqList &l, int size);
 #endif // MAIN_H_INCLUDED

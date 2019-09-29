@@ -36,10 +36,20 @@ int main()
     deleteItemIn(L, minValInt, maxValInt);
     printList(L);
     cout << "Init List" << endl;
-    InitList2(L);
+    SeqList L1;
+    InitList2(L1);
+    printList(L1);
+    deleteDuplicate(L1);
+    printList(L1);
+    cout << "merge list" << endl;
+    sortList(L);
+    sortList(L1);
+    cout << "L L1 is " << endl;
     printList(L);
-    deleteDuplicate(L);
-    printList(L);
+    printList(L1);
+    SeqList L2;
+    mergeList(L, L1, L2);
+    printList(L2);
     return 0;
 }
 void InitList(SeqList &l) {
@@ -53,10 +63,19 @@ void InitList(SeqList &l) {
 
 void InitList2(SeqList &l) {
     l.data = new ElemType[InitSize];
-    int length = 10;
+    int length = 30;
     l.length = length;
     for(int i = 0 ; i < length; i++) {
-        l.data[i] = i % 3;
+        l.data[i] = i % 6;
+    }
+}
+
+void InitListBySize(SeqList &l, int size) {
+    l.data = new ElemType[size];
+    int length = size;
+    l.length = length;
+    for(int i = 0 ; i < length; i++) {
+        l.data[i] = 0;
     }
 }
 
@@ -220,4 +239,28 @@ void deleteDuplicate(SeqList &L) {
             }
         }
     }
+}
+
+void mergeList(SeqList &L1, SeqList &L2,SeqList &L3) {
+    int length = L1.length + L2.length;
+    int finished = 0;
+    InitListBySize(L3, length);
+    for(int i = 0,j = 0 ; finished <= length - 1 ;) {
+        if(i > L1.length - 1) {
+            L3.data[finished] = L2.data[j];
+            j++;
+        } else if(j > L2.length - 1) {
+            L3.data[finished] = L1.data[i];
+            i++;
+        } else if(L1.data[i] > L2.data[j]) {
+            L3.data[finished] = L2.data[j];
+            j++;
+        } else {
+            L3.data[finished] = L1.data[i];
+            i++;
+        }
+        finished++;
+    }
+
+
 }
