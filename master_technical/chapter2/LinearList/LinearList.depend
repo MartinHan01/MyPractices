@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1569735435 source:c:\mycode\mypractices\master_technical\chapter2\linearlist\main.cpp
-	<iostream>
-	"main.h"
-
-1569734290 c:\mycode\mypractices\master_technical\chapter2\linearlist\main.h
-
-1567573256 c:\mycode\mypractices\master_technical\chapter2\linearlist\hello.cpp
-
